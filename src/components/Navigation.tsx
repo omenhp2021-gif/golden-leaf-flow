@@ -1,0 +1,82 @@
+import { Button } from "@/components/ui/button";
+import { Leaf, Menu, ShoppingCart } from "lucide-react";
+import { useState } from "react";
+
+export const Navigation = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border shadow-sm">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
+          <a href="/" className="flex items-center gap-2 group">
+            <Leaf className="w-8 h-8 text-secondary group-hover:rotate-12 transition-transform" />
+            <span className="text-xl font-bold">Orthodox Tea Co.</span>
+          </a>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-8">
+            <a href="#products" className="text-sm font-medium hover:text-secondary transition-colors">
+              Shop
+            </a>
+            <a href="#story" className="text-sm font-medium hover:text-secondary transition-colors">
+              Our Story
+            </a>
+            <a href="#process" className="text-sm font-medium hover:text-secondary transition-colors">
+              Process
+            </a>
+            <a href="#contact" className="text-sm font-medium hover:text-secondary transition-colors">
+              Wholesale
+            </a>
+            <a href="#contact" className="text-sm font-medium hover:text-secondary transition-colors">
+              Contact
+            </a>
+          </div>
+
+          {/* Cart & Menu */}
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" size="icon" className="relative">
+              <ShoppingCart className="w-5 h-5" />
+              <span className="absolute -top-1 -right-1 w-5 h-5 bg-secondary text-primary text-xs rounded-full flex items-center justify-center">
+                0
+              </span>
+            </Button>
+            
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="md:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <Menu className="w-6 h-6" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden py-6 border-t border-border">
+            <div className="flex flex-col gap-4">
+              <a href="#products" className="text-sm font-medium hover:text-secondary transition-colors">
+                Shop
+              </a>
+              <a href="#story" className="text-sm font-medium hover:text-secondary transition-colors">
+                Our Story
+              </a>
+              <a href="#process" className="text-sm font-medium hover:text-secondary transition-colors">
+                Process
+              </a>
+              <a href="#contact" className="text-sm font-medium hover:text-secondary transition-colors">
+                Wholesale
+              </a>
+              <a href="#contact" className="text-sm font-medium hover:text-secondary transition-colors">
+                Contact
+              </a>
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
+  );
+};
