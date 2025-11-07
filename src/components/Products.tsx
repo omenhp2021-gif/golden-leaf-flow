@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import greenTeaImage from "@/assets/green-tea-closeup.jpg";
 import blackTeaImage from "@/assets/black-tea-closeup.jpg";
 import { ShoppingCart, Thermometer, Clock, MapPin } from "lucide-react";
+import { ProductCardWithLeaves } from "./ProductCardWithLeaves";
 
 const products = [
   {
@@ -47,11 +48,9 @@ export const Products = () => {
         {/* Products Grid */}
         <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {products.map((product, index) => (
-            <Card 
-              key={product.id} 
-              className="overflow-hidden hover-lift border-0 shadow-lg bg-card"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
+            <ProductCardWithLeaves key={product.id} index={index}>
+              <Card className="overflow-hidden hover-lift border-0 shadow-lg bg-card">
+
               {/* Product Image */}
               <div className="relative h-80 overflow-hidden">
                 <img 
@@ -120,7 +119,8 @@ export const Products = () => {
                   </Button>
                 </div>
               </div>
-            </Card>
+              </Card>
+            </ProductCardWithLeaves>
           ))}
         </div>
 
