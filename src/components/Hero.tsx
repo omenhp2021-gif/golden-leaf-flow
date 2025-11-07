@@ -1,12 +1,16 @@
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-tea-leaves.jpg";
 import { ArrowRight, Leaf, Award, Package } from "lucide-react";
+import { TeaLeafAnimation } from "./TeaLeafAnimation";
 
 export const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Interactive Tea Leaf Animation */}
+      <TeaLeafAnimation />
+      
       {/* Animated Tea Line SVG */}
-      <svg 
+      <svg
         className="absolute inset-0 w-full h-full pointer-events-none z-0 opacity-30"
         viewBox="0 0 1200 800"
         fill="none"
