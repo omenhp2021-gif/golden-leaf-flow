@@ -5,10 +5,12 @@ import { Story } from "@/components/Story";
 import { Process } from "@/components/Process";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
+import { TeaLeafRain } from "@/components/TeaLeafRain";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <TeaLeafRain />
       <Navigation />
       <main>
         <Hero />
