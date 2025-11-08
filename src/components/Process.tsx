@@ -50,12 +50,15 @@ export const Process = () => {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <h2 className="text-4xl md:text-5xl font-bold">
-            The Orthodox Method
-          </h2>
-          <p className="text-xl text-muted-foreground">
-            Five time-honored steps that transform fresh leaves into exceptional tea, preserving natural character and complexity.
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-6 fade-in-up">
+          <div className="inline-block">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2">
+              The <span className="bg-gradient-green bg-clip-text text-transparent">Orthodox</span> Craft
+            </h2>
+            <div className="h-1 w-32 mx-auto bg-gradient-gold rounded-full gold-shimmer" />
+          </div>
+          <p className="text-xl text-muted-foreground leading-relaxed">
+            Five sacred steps, unchanged for centuries. This is how we honor each precious leaf, transforming nature's gift into liquid poetry.
           </p>
         </div>
 
@@ -68,21 +71,21 @@ export const Process = () => {
             {steps.map((step, index) => (
               <Card 
                 key={step.title}
-                className="relative p-6 border-2 bg-card hover:bg-card/80 hover:-translate-y-2 transition-all duration-300 shadow-lg"
+                className="relative p-6 border-2 border-tea-gold/20 bg-gradient-to-br from-card to-muted/10 hover:shadow-2xl hover:-translate-y-3 hover:border-tea-gold/50 transition-all duration-500"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {/* Step Number */}
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-secondary text-primary font-bold flex items-center justify-center text-sm shadow-md">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-gradient-green text-primary-foreground font-bold flex items-center justify-center shadow-lg border-2 border-card">
                   {index + 1}
                 </div>
                 
-                <div className="flex flex-col items-center text-center space-y-4 pt-2">
-                  <div className="w-16 h-16 rounded-full bg-secondary/20 flex items-center justify-center">
-                    <step.icon className="w-8 h-8 text-secondary" />
+                <div className="flex flex-col items-center text-center space-y-4 pt-4">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-tea-green/20 to-tea-gold/20 flex items-center justify-center ring-2 ring-tea-gold/30">
+                    <step.icon className="w-8 h-8 text-tea-green" />
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-semibold mb-2">{step.title}</h3>
+                    <h3 className="text-lg font-bold mb-2">{step.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       {step.description}
                     </p>
@@ -94,9 +97,10 @@ export const Process = () => {
         </div>
 
         {/* Bottom CTA */}
-        <div className="text-center mt-16 p-8 bg-muted/50 rounded-2xl max-w-3xl mx-auto">
-          <p className="text-lg text-muted-foreground mb-2">
-            <span className="font-semibold text-foreground">The difference is in the details.</span> Unlike CTC (Cut-Tear-Curl) tea, orthodox processing preserves the whole leaf structure, resulting in a more nuanced, aromatic cup with greater depth and clarity.
+        <div className="text-center mt-16 p-10 bg-gradient-to-br from-muted/50 via-tea-gold/5 to-muted/50 rounded-3xl max-w-3xl mx-auto border border-tea-gold/20 shadow-xl">
+          <p className="text-lg text-muted-foreground leading-relaxed">
+            <span className="font-bold text-foreground text-xl block mb-2">The Kanchan Difference</span>
+            Unlike CTC (Cut-Tear-Curl) mass production, orthodox processing honors the whole leaf. The result? A tea that breathes with complexity, depth, and the unmistakable essence of its terroir—sip by sip revealing layers of flavor that can never be rushed.
           </p>
         </div>
       </div>

@@ -10,9 +10,15 @@ export const Navigation = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2 group">
-            <Leaf className="w-8 h-8 text-secondary group-hover:rotate-12 transition-transform" />
-            <span className="text-xl font-bold">Orthodox Tea Co.</span>
+          <a href="/" className="flex items-center gap-3 group">
+            <div className="relative">
+              <Leaf className="w-8 h-8 text-tea-green group-hover:rotate-12 transition-transform duration-500" />
+              <Leaf className="w-4 h-4 text-tea-gold absolute -right-1 -bottom-1 opacity-80" />
+            </div>
+            <div className="flex flex-col leading-tight">
+              <span className="text-xl font-bold tracking-tight">Kanchan</span>
+              <span className="text-xs text-muted-foreground tracking-wider">TEA GARDEN</span>
+            </div>
           </a>
 
           {/* Desktop Navigation */}

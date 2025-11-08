@@ -42,25 +42,27 @@ export const Story = () => {
             </div>
             
             {/* Floating Stats */}
-            <div className="absolute -bottom-6 -right-6 bg-card p-6 rounded-xl shadow-xl">
-              <div className="text-4xl font-bold text-secondary">3rd</div>
-              <div className="text-sm text-muted-foreground">Generation</div>
-              <div className="text-sm text-muted-foreground">Tea Makers</div>
+            <div className="absolute -bottom-6 -right-6 bg-gradient-to-br from-card via-tea-gold/5 to-card p-8 rounded-2xl shadow-2xl border border-tea-gold/20">
+              <div className="text-5xl font-bold bg-gradient-gold bg-clip-text text-transparent">3rd</div>
+              <div className="text-sm font-semibold text-tea-green">Generation</div>
+              <div className="text-xs text-muted-foreground mt-1">Tea Masters</div>
             </div>
           </div>
 
           {/* Content */}
           <div className="space-y-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
             <div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Where Heritage Meets{" "}
-                <span className="text-secondary">Purity</span>
-              </h2>
+              <div className="inline-block mb-6">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2">
+                  The <span className="bg-gradient-green bg-clip-text text-transparent">Kanchan</span> Legacy
+                </h2>
+                <div className="h-1 w-24 bg-gradient-gold rounded-full gold-shimmer" />
+              </div>
               <p className="text-lg text-muted-foreground leading-relaxed mb-4">
-                Our story begins in the mist-covered hills of India's finest tea estates, where generations of tea makers have perfected the art of orthodox processing.
+                Nestled in the pristine Himalayan foothills, Kanchan Tea Garden has been cultivating excellence for three generations. Our single-estate approach ensures that every cup carries the unique terroir of our blessed land.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Every leaf is plucked at dawn, hand-rolled with precision, and carefully oxidized to preserve the natural character that makes orthodox tea incomparable. We believe tea should tell a story of place, people, and patience.
+                Each leaf is plucked at the perfect moment of dawn, when dew still glistens and flavor compounds are at their peak. Hand-rolled by skilled artisans using orthodox methods passed down through generations, our teas preserve the soul of the garden.
               </p>
             </div>
 
@@ -69,10 +71,10 @@ export const Story = () => {
               {values.map((value, index) => (
                 <Card 
                   key={value.title}
-                  className="p-6 border-0 bg-muted/30 hover:bg-muted/50 transition-colors duration-300"
+                  className="p-6 border border-tea-gold/10 bg-gradient-to-br from-card to-muted/20 hover:shadow-xl hover:border-tea-gold/30 transition-all duration-500 hover-lift"
                   style={{ animationDelay: `${0.4 + index * 0.1}s` }}
                 >
-                  <value.icon className="w-8 h-8 text-secondary mb-3" />
+                  <value.icon className="w-8 h-8 text-tea-green mb-3" />
                   <h3 className="text-lg font-semibold mb-2">{value.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     {value.description}

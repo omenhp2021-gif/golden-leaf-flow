@@ -3,32 +3,32 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import greenTeaImage from "@/assets/green-tea-closeup.jpg";
 import blackTeaImage from "@/assets/black-tea-closeup.jpg";
-import { ShoppingCart, Thermometer, Clock, MapPin } from "lucide-react";
+import { ShoppingCart, Thermometer, Clock, MapPin, Leaf } from "lucide-react";
 import { ProductCardWithLeaves } from "./ProductCardWithLeaves";
 
 const products = [
   {
     id: 1,
-    name: "Organic Orthodox Green Tea",
+    name: "Kanchan Himalayan Green Tea",
     image: greenTeaImage,
-    description: "Delicate, vegetal notes with a sweet, lingering finish. Hand-rolled from first flush leaves.",
-    tastingNotes: ["Grassy", "Sweet", "Floral"],
+    description: "Ethereal jade liquor with delicate vegetal sweetness. First flush leaves hand-rolled at dawn from our high-altitude estate, delivering floral complexity and a lingering umami finish.",
+    tastingNotes: ["Jade Green", "Spring Floral", "Sweet Umami"],
     steepTemp: "75-80°C",
     steepTime: "2-3 min",
-    origin: "Darjeeling, 2000m elevation",
-    price: "$24.99",
+    origin: "Kanchan Estate, 2000m",
+    price: "$32.99",
     priceUnit: "100g",
   },
   {
     id: 2,
-    name: "Organic Orthodox Black Tea",
+    name: "Kanchan Heritage Black Tea",
     image: blackTeaImage,
-    description: "Rich, malty character with hints of cocoa and dried fruit. Full-bodied with a smooth finish.",
-    tastingNotes: ["Malty", "Cocoa", "Dried Fruit"],
+    description: "Deep amber nectar with robust malty character. Orthodox-processed from mature leaves, revealing notes of dark chocolate, dried stone fruit, and warm spice. A testament to traditional craftsmanship.",
+    tastingNotes: ["Dark Chocolate", "Malty", "Stone Fruit"],
     steepTemp: "95-100°C",
     steepTime: "3-5 min",
-    origin: "Assam, 500m elevation",
-    price: "$22.99",
+    origin: "Kanchan Estate, Heritage Block",
+    price: "$29.99",
     priceUnit: "100g",
   },
 ];
@@ -38,10 +38,16 @@ export const Products = () => {
     <section className="py-24 bg-gradient-to-b from-background to-muted/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <h2 className="text-4xl md:text-5xl font-bold">Our Tea Collection</h2>
-          <p className="text-xl text-muted-foreground">
-            Discover the pure essence of single-estate orthodox teas, cultivated with care and processed by hand.
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-6 fade-in-up">
+          <div className="inline-block">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2">
+              Our <span className="bg-gradient-green bg-clip-text text-transparent">Premium</span> Collection
+            </h2>
+            <div className="h-1 w-32 mx-auto bg-gradient-gold rounded-full gold-shimmer" />
+          </div>
+          <p className="text-xl text-muted-foreground leading-relaxed">
+            Each leaf handpicked at dawn, each batch crafted with generations of expertise. 
+            Discover orthodox teas that honor tradition while celebrating pure, natural flavor.
           </p>
         </div>
 
@@ -59,10 +65,11 @@ export const Products = () => {
                   className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                 />
                 <div className="absolute top-4 right-4">
-                  <Badge className="bg-accent text-accent-foreground shadow-md">
-                    Organic Certified
+                  <Badge className="bg-gradient-gold text-accent-foreground shadow-lg border border-tea-gold-light/50 font-semibold">
+                    ✓ Organic Certified
                   </Badge>
                 </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-transparent" />
               </div>
 
               {/* Product Info */}
@@ -110,10 +117,10 @@ export const Products = () => {
                 {/* Price & CTA */}
                 <div className="flex items-center justify-between pt-4">
                   <div>
-                    <div className="text-3xl font-bold text-primary">{product.price}</div>
-                    <div className="text-sm text-muted-foreground">{product.priceUnit}</div>
+                    <div className="text-3xl font-bold bg-gradient-green bg-clip-text text-transparent">{product.price}</div>
+                    <div className="text-sm text-muted-foreground font-medium">{product.priceUnit}</div>
                   </div>
-                  <Button className="bg-primary hover:bg-primary/90 shadow-md group">
+                  <Button className="bg-gradient-green hover:opacity-90 shadow-lg hover-lift group">
                     <ShoppingCart className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
                     Add to Cart
                   </Button>
@@ -125,12 +132,13 @@ export const Products = () => {
         </div>
 
         {/* View All CTA */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-16">
           <Button 
             variant="outline" 
             size="lg"
-            className="border-2 hover:bg-secondary/10"
+            className="border-2 border-tea-gold hover:bg-tea-gold/10 hover:border-tea-gold shadow-lg hover-lift px-8"
           >
+            <Leaf className="w-4 h-4 mr-2" />
             View Full Collection
           </Button>
         </div>

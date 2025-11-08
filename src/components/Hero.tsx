@@ -41,18 +41,18 @@ export const Hero = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
           <div className="space-y-8 animate-fade-in">
-            <div className="inline-flex items-center gap-2 bg-card px-4 py-2 rounded-full shadow-sm">
-              <Leaf className="w-4 h-4 text-secondary" />
-              <span className="text-sm font-medium">Certified Organic Orthodox Tea</span>
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-tea-green/10 to-tea-gold/10 px-5 py-2.5 rounded-full border border-tea-gold/20 shadow-lg">
+              <Leaf className="w-4 h-4 text-tea-green" />
+              <span className="text-sm font-semibold bg-gradient-green bg-clip-text text-transparent">Premium Orthodox Tea Estate</span>
             </div>
             
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-balance leading-tight">
-              Crafted by Hand.{" "}
-              <span className="text-secondary">Sipped with Reverence.</span>
+              From Garden to Cup,{" "}
+              <span className="bg-gradient-green bg-clip-text text-transparent">Naturally.</span>
             </h1>
             
-            <p className="text-xl text-muted-foreground max-w-xl text-balance">
-              Single-estate organic orthodox green & black teas — small batches, big character.
+            <p className="text-xl text-muted-foreground max-w-xl text-balance leading-relaxed">
+              Experience the pure essence of hand-crafted orthodox teas from the pristine gardens of Kanchan. Every leaf tells a story of tradition, purity, and uncompromising quality.
             </p>
 
             {/* Value Props */}
@@ -75,17 +75,17 @@ export const Hero = () => {
             <div className="flex flex-wrap gap-4 pt-4">
               <Button 
                 size="lg" 
-                className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover-lift group"
+                className="bg-gradient-green text-primary-foreground hover:opacity-90 shadow-xl hover-lift group px-8"
               >
-                Shop Organic Tea
-                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                Explore Our Teas
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button 
                 size="lg" 
                 variant="outline"
-                className="border-2 hover:bg-secondary/10"
+                className="border-2 border-tea-gold hover:bg-tea-gold/10 hover:border-tea-gold shadow-lg hover-lift"
               >
-                Request Wholesale
+                Wholesale Inquiry
               </Button>
             </div>
           </div>
@@ -102,9 +102,10 @@ export const Hero = () => {
             </div>
             
             {/* Floating Badge */}
-            <div className="absolute -bottom-6 -left-6 bg-card p-6 rounded-xl shadow-xl animate-fade-in" style={{ animationDelay: '0.5s' }}>
-              <div className="text-4xl font-bold text-primary">100%</div>
-              <div className="text-sm text-muted-foreground">Organic</div>
+            <div className="absolute -bottom-6 -left-6 bg-gradient-to-br from-card via-tea-gold/5 to-card p-8 rounded-2xl shadow-2xl border border-tea-gold/20 animate-fade-in" style={{ animationDelay: '0.5s' }}>
+              <div className="text-5xl font-bold bg-gradient-gold bg-clip-text text-transparent">100%</div>
+              <div className="text-sm font-semibold text-tea-green">Organic</div>
+              <div className="text-xs text-muted-foreground mt-1">Certified</div>
             </div>
           </div>
         </div>

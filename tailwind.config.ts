@@ -49,13 +49,20 @@ export default {
         },
         tea: {
           green: "hsl(var(--tea-green))",
+          "green-light": "hsl(var(--tea-green-light))",
+          "green-accent": "hsl(var(--tea-green-accent))",
           brown: "hsl(var(--tea-brown))",
           cream: "hsl(var(--tea-cream))",
           gold: "hsl(var(--tea-gold))",
+          "gold-light": "hsl(var(--tea-gold-light))",
+          earth: "hsl(var(--tea-earth))",
         },
       },
       backgroundImage: {
         'gradient-hero': 'var(--gradient-hero)',
+        'gradient-gold': 'var(--gradient-gold)',
+        'gradient-green': 'var(--gradient-green)',
+        'gradient-earth': 'var(--gradient-earth)',
       },
       borderRadius: {
         lg: "var(--radius)",
