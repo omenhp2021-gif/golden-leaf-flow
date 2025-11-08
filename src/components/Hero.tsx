@@ -76,6 +76,10 @@ export const Hero = () => {
               <Button 
                 size="lg" 
                 className="bg-gradient-green text-primary-foreground hover:opacity-90 shadow-xl hover-lift group px-8"
+                onClick={() => {
+                  const element = document.querySelector('#products');
+                  element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
               >
                 Explore Our Teas
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -84,6 +88,10 @@ export const Hero = () => {
                 size="lg" 
                 variant="outline"
                 className="border-2 border-tea-gold hover:bg-tea-gold/10 hover:border-tea-gold shadow-lg hover-lift"
+                onClick={() => {
+                  const element = document.querySelector('#contact');
+                  element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
               >
                 Wholesale Inquiry
               </Button>

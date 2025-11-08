@@ -1,9 +1,18 @@
 import { Button } from "@/components/ui/button";
-import { Leaf, Menu, ShoppingCart } from "lucide-react";
+import { Leaf, Menu } from "lucide-react";
 import { useState } from "react";
+import { Cart } from "./Cart";
 
 export const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const scrollToSection = (href: string) => {
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      setMobileMenuOpen(false);
+    }
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border shadow-sm">
@@ -23,31 +32,26 @@ export const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            <a href="#products" className="text-sm font-medium hover:text-secondary transition-colors">
+            <button onClick={() => scrollToSection("#products")} className="text-sm font-medium hover:text-secondary transition-colors">
               Shop
-            </a>
-            <a href="#story" className="text-sm font-medium hover:text-secondary transition-colors">
+            </button>
+            <button onClick={() => scrollToSection("#story")} className="text-sm font-medium hover:text-secondary transition-colors">
               Our Story
-            </a>
-            <a href="#process" className="text-sm font-medium hover:text-secondary transition-colors">
+            </button>
+            <button onClick={() => scrollToSection("#process")} className="text-sm font-medium hover:text-secondary transition-colors">
               Process
-            </a>
-            <a href="#contact" className="text-sm font-medium hover:text-secondary transition-colors">
+            </button>
+            <button onClick={() => scrollToSection("#contact")} className="text-sm font-medium hover:text-secondary transition-colors">
               Wholesale
-            </a>
-            <a href="#contact" className="text-sm font-medium hover:text-secondary transition-colors">
+            </button>
+            <button onClick={() => scrollToSection("#contact")} className="text-sm font-medium hover:text-secondary transition-colors">
               Contact
-            </a>
+            </button>
           </div>
 
           {/* Cart & Menu */}
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-secondary text-primary text-xs rounded-full flex items-center justify-center">
-                0
-              </span>
-            </Button>
+            <Cart />
             
             <Button 
               variant="ghost" 
@@ -64,21 +68,21 @@ export const Navigation = () => {
         {mobileMenuOpen && (
           <div className="md:hidden py-6 border-t border-border">
             <div className="flex flex-col gap-4">
-              <a href="#products" className="text-sm font-medium hover:text-secondary transition-colors">
+              <button onClick={() => scrollToSection("#products")} className="text-left text-sm font-medium hover:text-secondary transition-colors">
                 Shop
-              </a>
-              <a href="#story" className="text-sm font-medium hover:text-secondary transition-colors">
+              </button>
+              <button onClick={() => scrollToSection("#story")} className="text-left text-sm font-medium hover:text-secondary transition-colors">
                 Our Story
-              </a>
-              <a href="#process" className="text-sm font-medium hover:text-secondary transition-colors">
+              </button>
+              <button onClick={() => scrollToSection("#process")} className="text-left text-sm font-medium hover:text-secondary transition-colors">
                 Process
-              </a>
-              <a href="#contact" className="text-sm font-medium hover:text-secondary transition-colors">
+              </button>
+              <button onClick={() => scrollToSection("#contact")} className="text-left text-sm font-medium hover:text-secondary transition-colors">
                 Wholesale
-              </a>
-              <a href="#contact" className="text-sm font-medium hover:text-secondary transition-colors">
+              </button>
+              <button onClick={() => scrollToSection("#contact")} className="text-left text-sm font-medium hover:text-secondary transition-colors">
                 Contact
-              </a>
+              </button>
             </div>
           </div>
         )}

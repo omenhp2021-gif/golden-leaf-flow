@@ -5,6 +5,7 @@ import greenTeaImage from "@/assets/green-tea-closeup.jpg";
 import blackTeaImage from "@/assets/black-tea-closeup.jpg";
 import { ShoppingCart, Thermometer, Clock, MapPin, Leaf } from "lucide-react";
 import { ProductCardWithLeaves } from "./ProductCardWithLeaves";
+import { useCart } from "@/contexts/CartContext";
 
 const products = [
   {
@@ -16,7 +17,7 @@ const products = [
     steepTemp: "75-80°C",
     steepTime: "2-3 min",
     origin: "Kanchan Estate, 2000m",
-    price: "$32.99",
+    price: 32.99,
     priceUnit: "100g",
   },
   {
@@ -28,12 +29,13 @@ const products = [
     steepTemp: "95-100°C",
     steepTime: "3-5 min",
     origin: "Kanchan Estate, Heritage Block",
-    price: "$29.99",
+    price: 29.99,
     priceUnit: "100g",
   },
 ];
 
 export const Products = () => {
+  const { addToCart } = useCart();
   return (
     <section className="py-24 bg-gradient-to-b from-background to-muted/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -117,10 +119,21 @@ export const Products = () => {
                 {/* Price & CTA */}
                 <div className="flex items-center justify-between pt-4">
                   <div>
-                    <div className="text-3xl font-bold bg-gradient-green bg-clip-text text-transparent">{product.price}</div>
+                    <div className="text-3xl font-bold bg-gradient-green bg-clip-text text-transparent">
+                      ${product.price.toFixed(2)}
+                    </div>
                     <div className="text-sm text-muted-foreground font-medium">{product.priceUnit}</div>
                   </div>
-                  <Button className="bg-gradient-green hover:opacity-90 shadow-lg hover-lift group">
+                  <Button 
+                    className="bg-gradient-green hover:opacity-90 shadow-lg hover-lift group"
+                    onClick={() => addToCart({
+                      id: product.id,
+                      name: product.name,
+                      price: product.price,
+                      image: product.image,
+                      priceUnit: product.priceUnit,
+                    })}
+                  >
                     <ShoppingCart className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
                     Add to Cart
                   </Button>
