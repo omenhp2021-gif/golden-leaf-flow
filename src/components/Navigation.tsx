@@ -1,10 +1,14 @@
 import { Button } from "@/components/ui/button";
-import { Leaf, Menu } from "lucide-react";
+import { Leaf, Menu, User, LogOut } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Cart } from "./Cart";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
@@ -12,6 +16,11 @@ export const Navigation = () => {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
       setMobileMenuOpen(false);
     }
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    setMobileMenuOpen(false);
   };
 
   return (
@@ -53,6 +62,28 @@ export const Navigation = () => {
           <div className="flex items-center gap-4">
             <Cart />
             
+            {user ? (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="hidden md:flex gap-2"
+                onClick={handleSignOut}
+              >
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </Button>
+            ) : (
+              <Button 
+                variant="default" 
+                size="sm" 
+                className="hidden md:flex gap-2"
+                onClick={() => navigate("/auth")}
+              >
+                <User className="w-4 h-4" />
+                Sign In
+              </Button>
+            )}
+            
             <Button 
               variant="ghost" 
               size="icon" 
@@ -83,6 +114,31 @@ export const Navigation = () => {
               <button onClick={() => scrollToSection("#contact")} className="text-left text-sm font-medium hover:text-secondary transition-colors">
                 Contact
               </button>
+              
+              {user ? (
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="justify-start gap-2"
+                  onClick={handleSignOut}
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
+                </Button>
+              ) : (
+                <Button 
+                  variant="default" 
+                  size="sm" 
+                  className="justify-start gap-2"
+                  onClick={() => {
+                    navigate("/auth");
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  <User className="w-4 h-4" />
+                  Sign In
+                </Button>
+              )}
             </div>
           </div>
         )}
