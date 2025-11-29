@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
-import heroImage from "@/assets/hero-tea-leaves.jpg";
 import { ArrowRight, Leaf, Award, Package } from "lucide-react";
 import { TeaLeafAnimation } from "./TeaLeafAnimation";
+import { TeaBrewingScene } from "./TeaBrewingScene";
 
 export const Hero = () => {
   return (
@@ -98,19 +98,12 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Hero Image */}
+          {/* 3D Tea Brewing Animation */}
           <div className="relative animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-              <img 
-                src={heroImage} 
-                alt="Premium organic orthodox tea leaves on natural linen fabric"
-                className="w-full h-auto object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent" />
-            </div>
+            <TeaBrewingScene />
             
             {/* Floating Badge */}
-            <div className="absolute -bottom-6 -left-6 bg-gradient-to-br from-card via-tea-gold/5 to-card p-8 rounded-2xl shadow-2xl border border-tea-gold/20 animate-fade-in" style={{ animationDelay: '0.5s' }}>
+            <div className="absolute -bottom-6 -left-6 bg-gradient-to-br from-card via-tea-gold/5 to-card p-8 rounded-2xl shadow-2xl border border-tea-gold/20 animate-fade-in z-10" style={{ animationDelay: '0.5s' }}>
               <div className="text-5xl font-bold bg-gradient-gold bg-clip-text text-transparent">100%</div>
               <div className="text-sm font-semibold text-tea-green">Organic</div>
               <div className="text-xs text-muted-foreground mt-1">Certified</div>
