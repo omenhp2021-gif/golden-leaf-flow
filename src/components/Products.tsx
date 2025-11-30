@@ -19,6 +19,7 @@ const products = [
     origin: "Kanchan Estate, 2000m",
     price: 32.99,
     priceUnit: "100g",
+    link: "https://www.youtube.com/watch?v=lUap3VxHsPQ"
   },
   {
     id: 2,
@@ -31,7 +32,73 @@ const products = [
     origin: "Kanchan Estate, Heritage Block",
     price: 29.99,
     priceUnit: "100g",
+    link: "https://mail.google.com/mail/u/0/?tab=rm&ogbl"
   },
+  {
+    id: 3,
+    name: "Kanchan Herbal Tea",
+    image: blackTeaImage,
+    description: "A blend of herbs and spices that are said to have a variety of health benefits.",
+    tastingNotes: ["Herbal", "Spicy", "Minty"],
+    steepTemp: "80-85°C",
+    steepTime: "3-4 min",
+    origin: "Kanchan Estate, Herbal Block",
+    price: 29.99,
+    priceUnit: "100g",
+    link: "https://mail.google.com/mail/u/0/?tab=rm&ogbl"
+  },
+  {
+    id: 3,
+    name: "Kanchan Herbal Tea",
+    image: blackTeaImage,
+    description: "A blend of herbs and spices that are said to have a variety of health benefits.",
+    tastingNotes: ["Herbal", "Spicy", "Minty"],
+    steepTemp: "80-85°C",
+    steepTime: "3-4 min",
+    origin: "Kanchan Estate, Herbal Block",
+    price: 29.99,
+    priceUnit: "100g",
+    link: "https://mail.google.com/mail/u/0/?tab=rm&ogbl"
+  },
+  {
+    id: 3,
+    name: "Kanchan Herbal Tea",
+    image: blackTeaImage,
+    description: "A blend of herbs and spices that are said to have a variety of health benefits.",
+    tastingNotes: ["Herbal", "Spicy", "Minty"],
+    steepTemp: "80-85°C",
+    steepTime: "3-4 min",
+    origin: "Kanchan Estate, Herbal Block",
+    price: 29.99,
+    priceUnit: "100g",
+    link: "https://mail.google.com/mail/u/0/?tab=rm&ogbl"
+  },
+  {
+    id: 3,
+    name: "Kanchan Herbal Tea",
+    image: blackTeaImage,
+    description: "A blend of herbs and spices that are said to have a variety of health benefits.",
+    tastingNotes: ["Herbal", "Spicy", "Minty"],
+    steepTemp: "80-85°C",
+    steepTime: "3-4 min",
+    origin: "Kanchan Estate, Herbal Block",
+    price: 29.99,
+    priceUnit: "100g",
+    link: "https://mail.google.com/mail/u/0/?tab=rm&ogbl"
+  },
+  {
+    id: 3,
+    name: "Kanchan Herbal Tea",
+    image: blackTeaImage,
+    description: "A blend of herbs and spices that are said to have a variety of health benefits.",
+    tastingNotes: ["Herbal", "Spicy", "Minty"],
+    steepTemp: "80-85°C",
+    steepTime: "3-4 min",
+    origin: "Kanchan Estate, Herbal Block",
+    price: 29.99,
+    priceUnit: "100g",
+    link: "https://mail.google.com/mail/u/0/?tab=rm&ogbl"
+  }
 ];
 
 export const Products = () => {
@@ -136,6 +203,14 @@ export const Products = () => {
                   >
                     <ShoppingCart className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
                     Add to Cart
+                  </Button>
+                  <Button
+                    className="bg-gradient-green hover:opacity-90 shadow-lg hover-lift group"
+                   onClick={() => {
+                    window.open(product.link, '_blank');
+                   }}
+                  >
+                    Buy Now
                   </Button>
                 </div>
               </div>
