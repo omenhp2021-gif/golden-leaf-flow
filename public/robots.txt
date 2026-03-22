@@ -1,0 +1,28 @@
+User-agent: *
+Allow: /
+Disallow: /404
+
+# Block crawling of query strings
+Disallow: /*?*
+
+# Specific bot permissions
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+# Sitemap location
+Sitemap: https://tajutea.com/sitemap.xml
+
+# Crawl delay (optional, helps avoid overloading small servers)
+Crawl-delay: 1

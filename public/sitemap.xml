@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Home Page -->
+  <url>
+    <loc>https://tajutea.com/</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Products Listing -->
+  <url>
+    <loc>https://tajutea.com/products</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Available Products -->
+  <url>
+    <loc>https://tajutea.com/product/himalayan-green-tea</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://tajutea.com/green-tea.jpg</image:loc>
+      <image:title>Taju Premium Orthodox Green Tea</image:title>
+      <image:caption>Hand-crafted single-estate orthodox green tea from Taju Estate</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://tajutea.com/product/heritage-black-tea</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://tajutea.com/black-tea.jpg</image:loc>
+      <image:title>Taju Premium Orthodox Black Tea</image:title>
+      <image:caption>Deep amber orthodox black tea from Taju Heritage Block, Assam</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Coming Soon Products (lower priority) -->
+  <url>
+    <loc>https://tajutea.com/product/silver-needle-white-tea</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://tajutea.com/product/mountain-oolong</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://tajutea.com/product/masala-chai-blend</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://tajutea.com/product/jasmine-pearl-green-tea</loc>
+    <lastmod>2026-03-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>
