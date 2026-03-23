@@ -1,12 +1,15 @@
+import { useState, useEffect, useRef } from "react";
+import emailjs from '@emailjs/browser';
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Mail, Phone, MapPin, Package } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Mail, Phone, MapPin, Briefcase } from "lucide-react";
 
 export const Contact = () => {
+  const formRef = useRef<HTMLFormElement>(null);
   const inquiryOptions = [
     { value: "general", label: "General Inquiry" },
     { value: "wholesale", label: "Wholesale Partnership" },
@@ -20,6 +23,10 @@ export const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const [honeypot, setHoneypot] = useState("");
+
+  useEffect(() => {
+    emailjs.init("AW2Bv1LbK8Wl0w--1");
+  }, []);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -40,17 +47,40 @@ export const Contact = () => {
 
     if (cooldown > 0) return;
 
+    if (!formRef.current) return;
+
     setIsSubmitting(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Set 60 second cooldown after successful submission attempt
-    setCooldown(60);
-    setIsSubmitting(false);
-    
-    // For demo/static purposes:
-    alert("Thank you! Your message has been sent. Please wait 60 seconds before sending another.");
+    try {
+      // 1. Send to business
+      const result1 = await emailjs.sendForm(
+        "service_fid8gws", 
+        "template_ajrlw8p", 
+        formRef.current,
+        "AW2Bv1LbK8Wl0w--1"
+      );
+      console.log("Business notification sent:", result1);
+      
+      // 2. Send auto-reply to customer
+      const result2 = await emailjs.sendForm(
+        "service_fid8gws", 
+        "template_xluhqwq", 
+        formRef.current,
+        "AW2Bv1LbK8Wl0w--1"
+      );
+      console.log("Auto-reply sent:", result2);
+      
+      toast.success("Message sent successfully! Check your email.");
+      setCooldown(60);
+      formRef.current.reset();
+      setSelectedInquiry("general");
+    } catch (error: any) {
+      console.error("EmailJS Full Error:", error);
+      const msg = typeof error === 'string' ? error : (error?.text || error?.message || "Check your EmailJS dashboard settings.");
+      toast.error(`Failed to send: ${msg}`);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   useEffect(() => {
@@ -90,50 +120,71 @@ export const Contact = () => {
               </p>
             </div>
 
-            {/* Contact Methods */}
-            <div className="space-y-6 pt-6">
-              <Card className="p-6 border border-tea-gold/20 bg-gradient-to-br from-card to-muted/10 flex items-start gap-4 hover-lift">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-tea-green/20 to-tea-gold/20 flex items-center justify-center flex-shrink-0 ring-2 ring-tea-gold/30">
+            {/* Contact Methods */}            <div className="space-y-6 pt-6">
+              {/* Email Card */}
+              <Card className="p-6 border border-tea-gold/20 bg-gradient-to-br from-card to-muted/10 flex items-start gap-4 h-full relative group hover-lift shadow-sm hover:shadow-md transition-all duration-300">
+                <a 
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=Contact@tajutea.com" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute inset-0 z-20 cursor-pointer"
+                  aria-label="Email Taju Tea"
+                />
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-tea-green/20 to-tea-gold/20 flex items-center justify-center flex-shrink-0 ring-2 ring-tea-gold/30 relative z-10 transition-transform group-hover:scale-110 pointer-events-none">
                   <Mail className="w-6 h-6 text-tea-green" />
                 </div>
-                <div>
+                <div className="relative z-10 pointer-events-none">
                   <h3 className="font-semibold mb-1">Email Us</h3>
-                  <p className="text-muted-foreground">hello@tajutea.com</p>
+                  <p className="text-muted-foreground break-all z-30 pointer-events-auto select-text cursor-text relative">Contact@tajutea.com</p>
                 </div>
               </Card>
 
-              <Card className="p-6 border border-tea-gold/20 bg-gradient-to-br from-card to-muted/10 flex items-start gap-4 hover-lift">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-tea-green/20 to-tea-gold/20 flex items-center justify-center flex-shrink-0 ring-2 ring-tea-gold/30">
+              {/* Phone Card */}
+              <Card className="p-6 border border-tea-gold/20 bg-gradient-to-br from-card to-muted/10 flex items-start gap-4 h-full relative group hover-lift shadow-sm hover:shadow-md transition-all duration-300">
+                <a 
+                  href="tel:96786288877" 
+                  className="absolute inset-0 z-20 cursor-pointer"
+                  aria-label="Call Taju Tea"
+                  onClick={(e) => e.stopPropagation()}
+                />
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-tea-green/20 to-tea-gold/20 flex items-center justify-center flex-shrink-0 ring-2 ring-tea-gold/30 relative z-10 transition-transform group-hover:scale-110 pointer-events-none">
                   <Phone className="w-6 h-6 text-tea-green" />
                 </div>
-                <div>
+                <div className="relative z-10 pointer-events-none">
                   <h3 className="font-semibold mb-1">Call Us</h3>
-                  <p className="text-muted-foreground">+91 98765 43210</p>
+                  <p className="text-muted-foreground z-30 pointer-events-auto select-text cursor-text relative">96786288877</p>
                 </div>
               </Card>
 
-              <Card className="p-6 border border-tea-gold/20 bg-gradient-to-br from-card to-muted/10 flex items-start gap-4 hover-lift">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-tea-green/20 to-tea-gold/20 flex items-center justify-center flex-shrink-0 ring-2 ring-tea-gold/30">
+              {/* Address Card */}
+              <Card className="p-6 border border-tea-gold/20 bg-gradient-to-br from-card to-muted/10 flex items-start gap-4 h-full relative group hover-lift shadow-sm hover:shadow-md transition-all duration-300">
+                <a 
+                  href="https://www.google.com/maps/search/Balijuri,+Kaziranga,+Nagaon,+Assam+78141" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="absolute inset-0 z-20 cursor-pointer"
+                  aria-label="Visit Taju Tea Estate"
+                  onClick={(e) => e.stopPropagation()}
+                />
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-tea-green/20 to-tea-gold/20 flex items-center justify-center flex-shrink-0 ring-2 ring-tea-gold/30 relative z-10 transition-transform group-hover:scale-110 pointer-events-none">
                   <MapPin className="w-6 h-6 text-tea-green" />
                 </div>
-                <div>
+                <div className="relative z-10 pointer-events-none">
                   <h3 className="font-semibold mb-1">Visit Taju Estate</h3>
-                  <p className="text-muted-foreground">Taju Road, Himalayan Foothills, Darjeeling 734101, India</p>
+                  <p className="text-muted-foreground z-30 pointer-events-auto select-text cursor-text relative">Balijuri, Kaziranga, Nagaon, Assam 78141</p>
                 </div>
               </Card>
 
-              <Card className="p-6 bg-gradient-gold border-2 border-tea-gold shadow-lg flex items-start gap-4 hover-lift">
-                <div className="w-12 h-12 rounded-full bg-tea-brown/10 flex items-center justify-center flex-shrink-0">
-                  <Package className="w-6 h-6 text-tea-brown" />
+              {/* Wholesale Partnerships */}
+              <Card className="p-6 border-2 border-tea-gold/20 bg-gradient-to-br from-tea-brown via-tea-earth to-tea-brown flex items-start gap-4 shadow-xl group hover-lift transition-all duration-300">
+                <div className="w-12 h-12 rounded-full bg-tea-gold flex items-center justify-center flex-shrink-0 shadow-lg ring-2 ring-white/10 transition-transform group-hover:scale-110">
+                  <Briefcase className="w-6 h-6 text-tea-brown" />
                 </div>
                 <div>
-                  <h3 className="font-bold mb-1 text-tea-brown">Wholesale Partnerships</h3>
-                  <p className="text-sm text-tea-brown/80 mb-3 leading-relaxed">
+                  <h3 className="font-bold mb-1 text-tea-gold">Wholesale Partnerships</h3>
+                  <p className="text-sm text-white/90 leading-relaxed font-medium">
                     Minimum orders from 5kg. Premium packaging, custom blends, and private labeling available for your brand.
                   </p>
-                  <Button variant="outline" size="sm" className="bg-tea-brown text-tea-cream hover:bg-tea-brown/90 border-0 shadow-md">
-                    Download Rate Card
-                  </Button>
                 </div>
               </Card>
             </div>
@@ -141,7 +192,7 @@ export const Contact = () => {
 
           {/* Contact Form */}
           <Card className="p-8 border-2 border-tea-gold/20 shadow-2xl bg-gradient-to-br from-card via-tea-gold/5 to-card">
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form id="contact-form" ref={formRef} className="space-y-6" onSubmit={handleSubmit}>
               {/* HONEYPOT FIELD - Hidden from humans */}
               <div className="hidden" aria-hidden="true">
                 <input 
@@ -158,6 +209,7 @@ export const Contact = () => {
                 <Label htmlFor="name" className="font-semibold">Full Name</Label>
                 <Input
                   id="name"
+                  name="from_name"
                   required
                   placeholder="Tushar B"
                   className="border-2 focus:border-tea-gold transition-colors"
@@ -168,6 +220,7 @@ export const Contact = () => {
                 <Label htmlFor="email" className="font-semibold">Email Address</Label>
                 <Input
                   id="email"
+                  name="from_email"
                   type="email"
                   required
                   placeholder="Tajutea@example.com"
@@ -179,15 +232,17 @@ export const Contact = () => {
                 <Label htmlFor="business" className="font-semibold">Business Name (Optional)</Label>
                 <Input
                   id="business"
+                  name="business_name"
                   placeholder="Your Company"
                   className="border-2 focus:border-tea-gold transition-colors"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="inquiry" className="font-semibold">Inquiry Type</Label>
+                <Label htmlFor="inquiry_type" className="font-semibold">Inquiry Type</Label>
                 <select
-                  id="inquiry"
+                  id="inquiry_type"
+                  name="inquiry_type"
                   value={selectedInquiry}
                   onChange={(e) => setSelectedInquiry(e.target.value)}
                   className="w-full rounded-md border-2 border-input bg-background px-3 py-2 text-sm focus:border-tea-gold focus:outline-none transition-colors"
@@ -202,6 +257,7 @@ export const Contact = () => {
                 <Label htmlFor="message" className="font-semibold">Message</Label>
                 <Textarea
                   id="message"
+                  name="message"
                   required
                   placeholder="Tell us about your interest in Taju teas..."
                   rows={5}

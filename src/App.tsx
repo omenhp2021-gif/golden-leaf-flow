@@ -11,11 +11,15 @@ import ProductsPage from "./pages/ProductsPage";
 import NotFound from "./pages/NotFound";
 import { CookieConsent } from "./components/CookieConsent";
 import { initTracking } from "./utils/tracking";
+import { ScrollToTop } from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   useEffect(() => {
+    // Scroll to top on refresh
+    window.scrollTo(0, 0);
+
     // Disable right-click globally
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault();
@@ -52,7 +56,8 @@ const App = () => {
           <CookieConsent />
           <Toaster />
           <Sonner />
-          <BrowserRouter>
+          <BrowserRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+            <ScrollToTop />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/products" element={<ProductsPage />} />

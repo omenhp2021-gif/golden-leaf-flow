@@ -39,7 +39,7 @@ export const CookieConsent = () => {
           
           <div className="flex-grow">
             <p className="text-xs text-muted-foreground leading-tight">
-              We use cookies to improve your experience and analyze traffic.
+              We use cookies to improve your experience.
             </p>
           </div>
 

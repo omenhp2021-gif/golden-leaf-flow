@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Product } from "@/data/products";
 import { ExternalLink, Thermometer, Clock, MapPin } from "lucide-react";
+import { trackInterest } from "@/utils/tracking";
 
 const SHOPIFY_URL = "https://kaziranga-tea-factory-2.myshopify.com";
 
@@ -32,6 +33,9 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
   }, [product]);
 
   const handleNotifyMe = () => {
+    // Track interest in analytics (Option 2)
+    trackInterest(product.name);
+    
     setShowNotification(true);
     setTimeout(() => {
       setShowNotification(false);

@@ -65,3 +65,22 @@ export const initTracking = () => {
     loadHeatmap(HEATMAP_ID);
   }
 };
+
+/**
+ * Custom tracking for demand assessment
+ * This sets a custom tag in Clarity to allow filtering by product interest
+ */
+export const trackInterest = (productName: string) => {
+  if (window.clarity) {
+    window.clarity("set", "interest", productName);
+  }
+  
+  // Also track as a GA4 event if available
+  // @ts-ignore
+  if (window.gtag) {
+    // @ts-ignore
+    window.gtag('event', 'notify_me_click', {
+      'product_name': productName
+    });
+  }
+};

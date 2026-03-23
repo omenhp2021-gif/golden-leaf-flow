@@ -1,5 +1,5 @@
-import greenTeaImage from "@/assets/green-tea-closeup.jpg";
-import blackTeaImage from "@/assets/black-tea-closeup.jpg";
+import greenTeaImage from "@/assets/OGT.jpeg";
+import blackTeaImage from "@/assets/OBT.jpeg";
 import whiteTeaImage from "@/assets/white-tea-closeup.jpg";
 import oolongTeaImage from "@/assets/oolong-tea-closeup.jpg";
 import masalaChaiImage from "@/assets/masala-chai-closeup.jpg";
@@ -41,7 +41,7 @@ export const products: Product[] = [
     tastingNotes: ["Jade Green", "Spring Floral", "Sweet Umami"],
     steepTemp: "75-80°C",
     steepTime: "2-3 min",
-    origin: "Taju Estate, 2000m",
+    origin: "Taju Estate, Assam",
     price: 50,
     priceUnit: "25gm",
     status: "available",
@@ -99,7 +99,7 @@ export const products: Product[] = [
     tastingNotes: ["Dark Chocolate", "Malty", "Stone Fruit"],
     steepTemp: "95-100°C",
     steepTime: "3-5 min",
-    origin: "Taju Estate, Heritage Block",
+    origin: "Taju Estate, Assam",
     price: 50,
     priceUnit: "25gm",
     status: "available",

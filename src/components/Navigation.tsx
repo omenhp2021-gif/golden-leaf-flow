@@ -67,7 +67,7 @@ export const Navigation = () => {
           <div className="flex items-center gap-3 ml-4 sm:ml-6 md:ml-8 flex-shrink-0">
             {/* Contact Cards - Desktop */}
             <a
-              href="tel:+919876543210"
+              href="tel:96786288877"
               className="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors group"
             >
               <Phone className="w-4 h-4 text-primary group-hover:scale-110 transition-transform" />
@@ -75,8 +75,10 @@ export const Navigation = () => {
             </a>
 
             <a
-              href="mailto:info@tajutea.com"
-              className="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary/10 hover:bg-secondary/20 transition-colors group"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=Contact@tajutea.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary/10 hover:bg-secondary/20 transition-colors group relative z-50"
             >
               <Mail className="w-4 h-4 text-secondary group-hover:scale-110 transition-transform" />
               <span className="text-sm font-medium">Email Us</span>
@@ -118,7 +120,7 @@ export const Navigation = () => {
               {/* Contact Cards - Mobile */}
               <div className="flex gap-3 pt-4 border-t border-border">
                 <a
-                  href="tel:+919876543210"
+                  href="tel:96786288877"
                   className="flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors"
                 >
                   <Phone className="w-4 h-4 text-primary" />
@@ -126,8 +128,10 @@ export const Navigation = () => {
                 </a>
 
                 <a
-                  href="mailto:info@tajutea.com"
-                  className="flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-lg bg-secondary/10 hover:bg-secondary/20 transition-colors"
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=Contact@tajutea.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-lg bg-secondary/10 hover:bg-secondary/20 transition-colors relative z-50"
                 >
                   <Mail className="w-4 h-4 text-secondary" />
                   <span className="text-sm font-medium">Email Us</span>
