@@ -159,7 +159,7 @@ export const Contact = () => {
               {/* Address Card */}
               <Card className="p-6 border border-tea-gold/20 bg-gradient-to-br from-card to-muted/10 flex items-start gap-4 h-full relative group hover-lift shadow-sm hover:shadow-md transition-all duration-300">
                 <a 
-                  href="https://www.google.com/maps/search/Balijuri,+Kaziranga,+Nagaon,+Assam+78141" 
+                  href="https://maps.app.goo.gl/yFo5K7XPq2ysPwCn7?g_st=ac" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="absolute inset-0 z-20 cursor-pointer"
@@ -171,7 +171,7 @@ export const Contact = () => {
                 </div>
                 <div className="relative z-10 pointer-events-none">
                   <h3 className="font-semibold mb-1">Visit Taju Estate</h3>
-                  <p className="text-muted-foreground z-30 pointer-events-auto select-text cursor-text relative">Balijuri, Kaziranga, Nagaon, Assam 78141</p>
+                  <p className="text-muted-foreground z-30 pointer-events-auto select-text cursor-text relative">Balijuri, Nagaon, Assam 78141</p>
                 </div>
               </Card>
 

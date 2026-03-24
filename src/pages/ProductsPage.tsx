@@ -32,7 +32,7 @@ const ProductsPage = () => {
             <div className="h-1 w-32 mx-auto bg-gradient-gold rounded-full gold-shimmer" />
             <p className="text-xl text-muted-foreground leading-relaxed">
               Explore our complete selection of handcrafted orthodox teas, each grown with care 
-              in the pristine highlands of Kaziranga Estate.
+              in the pristine highlands of Taju Estate.
             </p>
           </div>
         </div>
