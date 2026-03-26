@@ -14,6 +14,7 @@ import {
   Leaf,
   CheckCircle
 } from "lucide-react";
+import { useState, useEffect } from "react";
 
 const SHOPIFY_URL = "https://kaziranga-tea-factory-2.myshopify.com";
 
@@ -22,6 +23,20 @@ export default function ProductDetail() {
   const navigate = useNavigate();
   
   const product = slug ? getProductBySlug(slug) : undefined;
+
+  const [selectedWeight, setSelectedWeight] = useState(
+    product?.pricingOptions?.[0]?.weight || product?.priceUnit || "100g"
+  );
+
+  useEffect(() => {
+    if (product) {
+      if (product.pricingOptions?.length) {
+        setSelectedWeight(product.pricingOptions[0].weight);
+      } else {
+        setSelectedWeight(product.priceUnit);
+      }
+    }
+  }, [product]);
 
   if (!product) {
     return (
@@ -39,6 +54,10 @@ export default function ProductDetail() {
       </div>
     );
   }
+
+  const currentPrice = product.pricingOptions?.find(
+    (p) => p.weight === selectedWeight
+  )?.price || product.price;
 
   return (
     <div className="min-h-screen bg-background">
@@ -138,13 +157,34 @@ export default function ProductDetail() {
                 </div>
               </Card>
 
+              {/* Size Selector */}
+              {product.pricingOptions && (
+                <div className="pt-2">
+                  <h3 className="text-sm font-semibold text-muted-foreground mb-3">
+                    Select Size
+                  </h3>
+                  <div className="flex gap-2 flex-wrap">
+                    {product.pricingOptions.map(option => (
+                      <Badge
+                        key={option.weight}
+                        variant={selectedWeight === option.weight ? "default" : "outline"}
+                        className={`cursor-pointer px-4 py-2 text-sm transition-colors ${selectedWeight === option.weight ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/20'}`}
+                        onClick={() => setSelectedWeight(option.weight)}
+                      >
+                        {option.weight}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Price & CTA */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-6 mt-2 border-t border-border">
                 <div>
                   <div className="text-4xl font-bold bg-gradient-green bg-clip-text text-transparent">
-                    ₹{product.price.toFixed(2)}
+                    ₹{typeof currentPrice === 'number' ? currentPrice.toFixed(2) : currentPrice}
                   </div>
-                  <div className="text-muted-foreground font-medium">per {product.priceUnit}</div>
+                  <div className="text-muted-foreground font-medium">per {selectedWeight}</div>
                 </div>
                 <div className="flex gap-3 flex-1 sm:justify-end">
                   <Button 
@@ -152,7 +192,7 @@ export default function ProductDetail() {
                     className="bg-gradient-green hover:opacity-90 shadow-lg hover-lift group px-8"
                     asChild
                   >
-                    <a href={SHOPIFY_URL} target="_blank" rel="noopener noreferrer">
+                    <a href={product.shopifyVariants?.[selectedWeight] ?? SHOPIFY_URL} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
                       Buy Now
                     </a>
