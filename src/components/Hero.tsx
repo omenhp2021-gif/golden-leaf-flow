@@ -8,7 +8,7 @@ export const Hero = () => {
     <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Interactive Tea Leaf Animation */}
       <TeaLeafAnimation />
-      
+
       {/* Animated Tea Line SVG */}
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none z-0 opacity-30"
@@ -45,21 +45,21 @@ export const Hero = () => {
               <Leaf className="w-4 h-4 text-tea-green" />
               <span className="text-sm font-semibold bg-gradient-green bg-clip-text text-transparent">Premium Orthodox Tea Estate</span>
             </div>
-            
+
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-balance leading-tight">
               From Garden to Cup,{" "}
               <span className="bg-gradient-green bg-clip-text text-transparent">Naturally.</span>
             </h1>
-            
+
             <p className="text-xl text-muted-foreground max-w-xl text-balance leading-relaxed">
-              Experience the pure essence of hand-crafted orthodox teas from the pristine gardens of Taju Tea. Every leaf tells a story of tradition, purity, and uncompromising quality.
+              Experience the pure essence of hand-crafted orthodox teas from the pristine gardens of Taju-Tea. Every leaf tells a story of tradition, purity, and uncompromising quality.
             </p>
 
             {/* Value Props */}
             <div className="flex flex-wrap gap-6 pt-4">
               <div className="flex items-center gap-2">
                 <Award className="w-5 h-5 text-accent" />
-                <span className="text-sm font-medium">Naturaly Grown</span>
+                <span className="text-sm font-medium">Naturally Grown</span>
               </div>
               <div className="flex items-center gap-2">
                 <Leaf className="w-5 h-5 text-accent" />
@@ -73,8 +73,8 @@ export const Hero = () => {
 
             {/* CTAs */}
             <div className="flex flex-wrap gap-4 pt-4">
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 className="bg-gradient-green text-primary-foreground hover:opacity-90 shadow-xl hover-lift group px-8"
                 onClick={() => {
                   const element = document.querySelector('#products');
@@ -84,8 +84,8 @@ export const Hero = () => {
                 Explore Our Teas
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 variant="outline"
                 className="border-2 border-tea-gold hover:bg-tea-gold/10 hover:border-tea-gold shadow-lg hover-lift"
                 onClick={() => {
@@ -101,14 +101,14 @@ export const Hero = () => {
           {/* Hero Image */}
           <div className="relative animate-fade-in" style={{ animationDelay: '0.2s' }}>
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-              <img 
-                src={heroImage} 
+              <img
+                src={heroImage}
                 alt="Premium organic orthodox tea leaves on natural linen fabric"
                 className="w-full h-auto object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent" />
             </div>
-            
+
             {/* Floating Badge */}
             <div className="absolute -bottom-6 -left-6 bg-gradient-to-br from-card via-tea-gold/5 to-card p-8 rounded-2xl shadow-2xl border border-tea-gold/20 animate-fade-in" style={{ animationDelay: '0.5s' }}>
               <div className="text-6xl font-bold text-tea-gold">100%</div>
