@@ -15,12 +15,14 @@ import {
   CheckCircle
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useShopify } from "@/contexts/ShopifyContext";
 
 const SHOPIFY_URL = "https://kaziranga-tea-factory-2.myshopify.com";
 
 export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const { prices } = useShopify();
   
   const product = slug ? getProductBySlug(slug) : undefined;
 
@@ -55,9 +57,18 @@ export default function ProductDetail() {
     );
   }
 
-  const currentPrice = product.pricingOptions?.find(
+  let currentPrice = product.pricingOptions?.find(
     (p) => p.weight === selectedWeight
   )?.price || product.price;
+
+  const variantUrl = product.shopifyVariants?.[selectedWeight];
+  if (variantUrl) {
+    const variantIdRow = variantUrl.split('variant=')[1];
+    const variantId = variantIdRow ? variantIdRow.split('&')[0] : null;
+    if (variantId && prices[variantId]) {
+      currentPrice = prices[variantId];
+    }
+  }
 
   return (
     <div className="min-h-screen bg-background">

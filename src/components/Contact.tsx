@@ -25,7 +25,7 @@ export const Contact = () => {
   const [honeypot, setHoneypot] = useState("");
 
   useEffect(() => {
-    emailjs.init("AW2Bv1LbK8Wl0w--1");
+    emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "");
   }, []);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Honeypot check: If this hidden field is filled, it's a bot
     if (honeypot) {
       console.warn("Spam detected via honeypot.");
@@ -50,26 +50,26 @@ export const Contact = () => {
     if (!formRef.current) return;
 
     setIsSubmitting(true);
-    
+
     try {
       // 1. Send to business
       const result1 = await emailjs.sendForm(
-        "service_fid8gws", 
-        "template_ajrlw8p", 
+        import.meta.env.VITE_EMAILJS_SERVICE_ID || "",
+        import.meta.env.VITE_EMAILJS_TEMPLATE_BUSINESS || "",
         formRef.current,
-        "AW2Bv1LbK8Wl0w--1"
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY || ""
       );
       console.log("Business notification sent:", result1);
-      
+
       // 2. Send auto-reply to customer
       const result2 = await emailjs.sendForm(
-        "service_fid8gws", 
-        "template_xluhqwq", 
+        import.meta.env.VITE_EMAILJS_SERVICE_ID || "",
+        import.meta.env.VITE_EMAILJS_TEMPLATE_REPLY || "",
         formRef.current,
-        "AW2Bv1LbK8Wl0w--1"
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY || ""
       );
       console.log("Auto-reply sent:", result2);
-      
+
       toast.success("Message sent successfully! Check your email.");
       setCooldown(60);
       formRef.current.reset();
@@ -123,8 +123,8 @@ export const Contact = () => {
             {/* Contact Methods */}            <div className="space-y-6 pt-6">
               {/* Email Card */}
               <Card className="p-6 border border-tea-gold/20 bg-gradient-to-br from-card to-muted/10 flex items-start gap-4 h-full relative group hover-lift shadow-sm hover:shadow-md transition-all duration-300">
-                <a 
-                  href="https://mail.google.com/mail/?view=cm&fs=1&to=Contact@tajutea.com" 
+                <a
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=Contact@tajutea.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="absolute inset-0 z-20 cursor-pointer"
@@ -141,8 +141,8 @@ export const Contact = () => {
 
               {/* Phone Card */}
               <Card className="p-6 border border-tea-gold/20 bg-gradient-to-br from-card to-muted/10 flex items-start gap-4 h-full relative group hover-lift shadow-sm hover:shadow-md transition-all duration-300">
-                <a 
-                  href="tel:96786288877" 
+                <a
+                  href="tel:96786288877"
                   className="absolute inset-0 z-20 cursor-pointer"
                   aria-label="Call Taju Tea"
                   onClick={(e) => e.stopPropagation()}
@@ -158,10 +158,10 @@ export const Contact = () => {
 
               {/* Address Card */}
               <Card className="p-6 border border-tea-gold/20 bg-gradient-to-br from-card to-muted/10 flex items-start gap-4 h-full relative group hover-lift shadow-sm hover:shadow-md transition-all duration-300">
-                <a 
-                  href="https://maps.app.goo.gl/yFo5K7XPq2ysPwCn7?g_st=ac" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href="https://maps.app.goo.gl/yFo5K7XPq2ysPwCn7?g_st=ac"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="absolute inset-0 z-20 cursor-pointer"
                   aria-label="Visit Taju Tea Estate"
                   onClick={(e) => e.stopPropagation()}
@@ -171,7 +171,7 @@ export const Contact = () => {
                 </div>
                 <div className="relative z-10 pointer-events-none">
                   <h3 className="font-semibold mb-1">Visit Taju Estate</h3>
-                  <p className="text-muted-foreground z-30 pointer-events-auto select-text cursor-text relative">Balijuri, Nagaon, Assam 78141</p>
+                  <p className="text-muted-foreground z-30 pointer-events-auto select-text cursor-text relative">Balijuri, Kaziranga, Nagaon, 782135</p>
                 </div>
               </Card>
 
@@ -195,11 +195,11 @@ export const Contact = () => {
             <form id="contact-form" ref={formRef} className="space-y-6" onSubmit={handleSubmit}>
               {/* HONEYPOT FIELD - Hidden from humans */}
               <div className="hidden" aria-hidden="true">
-                <input 
-                  type="text" 
-                  name="website_url" 
-                  tabIndex={-1} 
-                  autoComplete="off" 
+                <input
+                  type="text"
+                  name="website_url"
+                  tabIndex={-1}
+                  autoComplete="off"
                   value={honeypot}
                   onChange={(e) => setHoneypot(e.target.value)}
                 />

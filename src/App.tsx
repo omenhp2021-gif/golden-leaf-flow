@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 import { CookieConsent } from "./components/CookieConsent";
 import { initTracking } from "./utils/tracking";
 import { ScrollToTop } from "./components/ScrollToTop";
+import { ShopifyProvider } from "./contexts/ShopifyContext";
 
 const queryClient = new QueryClient();
 
@@ -51,23 +52,25 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-        <TooltipProvider>
-          <CookieConsent />
-          <Toaster />
-          <Sonner />
-          <BrowserRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
-            <ScrollToTop />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/products" element={<ProductsPage />} />
-              <Route path="/product/:slug" element={<ProductDetail />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </ThemeProvider>
+      <ShopifyProvider>
+        <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+          <TooltipProvider>
+            <CookieConsent />
+            <Toaster />
+            <Sonner />
+            <BrowserRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+              <ScrollToTop />
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/products" element={<ProductsPage />} />
+                <Route path="/product/:slug" element={<ProductDetail />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </ThemeProvider>
+      </ShopifyProvider>
     </QueryClientProvider>
   );
 };

@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Product } from "@/data/products";
 import { ExternalLink, Thermometer, Clock, MapPin } from "lucide-react";
 import { trackInterest } from "@/utils/tracking";
+import { useShopify } from "@/contexts/ShopifyContext";
 
 const SHOPIFY_URL = "https://kaziranga-tea-factory-2.myshopify.com";
 
@@ -16,6 +17,7 @@ export interface ProductCardProps {
 
 export const ProductCard = ({ product, className }: ProductCardProps) => {
   const navigate = useNavigate();
+  const { prices } = useShopify();
   // Default selected weight to the first pricing option if available
   const [selectedWeight, setSelectedWeight] = useState(
     product.pricingOptions?.[0]?.weight || product.priceUnit
@@ -42,9 +44,18 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
     }, 3000);
   };
 
-  const currentPrice = product.pricingOptions?.find(
+  let currentPrice = product.pricingOptions?.find(
     (p) => p.weight === selectedWeight
   )?.price || product.price;
+
+  const variantUrl = product.shopifyVariants?.[selectedWeight];
+  if (variantUrl) {
+    const variantIdRow = variantUrl.split('variant=')[1];
+    const variantId = variantIdRow ? variantIdRow.split('&')[0] : null;
+    if (variantId && prices[variantId]) {
+      currentPrice = prices[variantId];
+    }
+  }
 
   return (
     <Card className={`overflow-hidden hover-lift border-0 shadow-lg bg-card group flex flex-col h-full ${className || ""}`}>
