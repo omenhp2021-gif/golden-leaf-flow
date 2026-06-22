@@ -61,12 +61,20 @@ export default function ProductDetail() {
     (p) => p.weight === selectedWeight
   )?.price || product.price;
 
+  let buyUrl = SHOPIFY_URL;
   const variantUrl = product.shopifyVariants?.[selectedWeight];
   if (variantUrl) {
-    const variantIdRow = variantUrl.split('variant=')[1];
-    const variantId = variantIdRow ? variantIdRow.split('&')[0] : null;
-    if (variantId && prices[variantId]) {
-      currentPrice = prices[variantId];
+    try {
+      const urlObj = new URL(variantUrl);
+      const variantId = urlObj.searchParams.get("variant");
+      if (variantId) {
+        buyUrl = `${urlObj.origin}/cart/${variantId}:1`;
+        if (prices[variantId]) {
+          currentPrice = prices[variantId];
+        }
+      }
+    } catch (e) {
+      console.error("Invalid variant URL", e);
     }
   }
 
@@ -180,7 +188,10 @@ export default function ProductDetail() {
                         key={option.weight}
                         variant={selectedWeight === option.weight ? "default" : "outline"}
                         className={`cursor-pointer px-4 py-2 text-sm transition-colors ${selectedWeight === option.weight ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/20'}`}
-                        onClick={() => setSelectedWeight(option.weight)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedWeight(option.weight);
+                        }}
                       >
                         {option.weight}
                       </Badge>
@@ -203,7 +214,7 @@ export default function ProductDetail() {
                     className="bg-gradient-green hover:opacity-90 shadow-lg hover-lift group px-8"
                     asChild
                   >
-                    <a href={product.shopifyVariants?.[selectedWeight] ?? SHOPIFY_URL} target="_blank" rel="noopener noreferrer">
+                    <a href={buyUrl} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
                       Buy Now
                     </a>

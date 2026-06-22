@@ -48,12 +48,20 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
     (p) => p.weight === selectedWeight
   )?.price || product.price;
 
+  let buyUrl = SHOPIFY_URL;
   const variantUrl = product.shopifyVariants?.[selectedWeight];
   if (variantUrl) {
-    const variantIdRow = variantUrl.split('variant=')[1];
-    const variantId = variantIdRow ? variantIdRow.split('&')[0] : null;
-    if (variantId && prices[variantId]) {
-      currentPrice = prices[variantId];
+    try {
+      const urlObj = new URL(variantUrl);
+      const variantId = urlObj.searchParams.get("variant");
+      if (variantId) {
+        buyUrl = `${urlObj.origin}/cart/${variantId}:1`;
+        if (prices[variantId]) {
+          currentPrice = prices[variantId];
+        }
+      }
+    } catch (e) {
+      console.error("Invalid variant URL", e);
     }
   }
 
@@ -154,7 +162,10 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
                         key={option.weight}
                         variant={selectedWeight === option.weight ? "default" : "outline"}
                         className={`cursor-pointer transition-colors ${selectedWeight === option.weight ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/20'}`}
-                        onClick={() => setSelectedWeight(option.weight)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedWeight(option.weight);
+                        }}
                       >
                         {option.weight}
                       </Badge>
@@ -185,7 +196,7 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
                       asChild
                     >
                       <a
-                        href={product.shopifyVariants?.[selectedWeight] ?? SHOPIFY_URL}
+                        href={buyUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
