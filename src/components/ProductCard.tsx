@@ -173,17 +173,18 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
                           else if (pillId && !loading) pillAvailable = false;
                         } catch (_) {}
                       }
+                      const isSelected = selectedWeight === option.weight;
                       return (
                         <Badge
                           key={option.weight}
-                          variant={selectedWeight === option.weight ? "default" : "outline"}
-                          className={`cursor-pointer transition-colors relative ${
-                            selectedWeight === option.weight
+                          variant={isSelected ? "default" : "outline"}
+                          className={`cursor-pointer transition-colors relative overflow-hidden ${
+                            isSelected
                               ? 'bg-primary text-primary-foreground'
                               : 'hover:bg-primary/20'
                           } ${
                             !pillAvailable
-                              ? 'opacity-60 line-through decoration-red-500 decoration-2'
+                              ? 'opacity-60'
                               : ''
                           }`}
                           onClick={(e) => {
@@ -191,7 +192,23 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
                             setSelectedWeight(option.weight);
                           }}
                         >
-                          {option.weight}
+                          <span className="relative z-10">{option.weight}</span>
+                          {!pillAvailable && isSelected && (
+                            <svg 
+                              className="absolute inset-0 w-full h-full pointer-events-none z-20" 
+                              preserveAspectRatio="none"
+                            >
+                              <line 
+                                x1="0" 
+                                y1="100%" 
+                                x2="100%" 
+                                y2="0" 
+                                stroke="currentColor" 
+                                strokeWidth="1.5" 
+                                className="opacity-80"
+                              />
+                            </svg>
+                          )}
                         </Badge>
                       );
                     })}
