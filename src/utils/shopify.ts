@@ -1,7 +1,12 @@
-const SHOPIFY_DOMAIN = import.meta.env.VITE_SHOPIFY_DOMAIN;
-const STOREFRONT_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN;
+const SHOPIFY_DOMAIN = import.meta.env.VITE_SHOPIFY_DOMAIN || "kaziranga-tea-factory-2.myshopify.com";
+const STOREFRONT_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN || "a9aabfb02dbe578cacb0dd4f7aea7b19";
 
 export async function fetchShopifyPrices(): Promise<Record<string, number>> {
+  if (!SHOPIFY_DOMAIN || !STOREFRONT_TOKEN) {
+    console.warn("Shopify Environment Variables are missing.");
+    return {};
+  }
+
   const query = `
     {
       products(first: 50) {
@@ -32,11 +37,6 @@ export async function fetchShopifyPrices(): Promise<Record<string, number>> {
       },
       body: JSON.stringify({ query }),
     });
-
-    if (!SHOPIFY_DOMAIN || !STOREFRONT_TOKEN) {
-      console.warn("Shopify Environment Variables are missing.");
-      return {};
-    }
 
     if (!response.ok) {
       console.error("Shopify API Error:", response.statusText);
