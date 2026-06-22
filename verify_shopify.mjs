@@ -12,6 +12,7 @@ const query = `
             node {
               id
               title
+              availableForSale
               price {
                 amount
               }

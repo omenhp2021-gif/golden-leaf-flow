@@ -1,7 +1,12 @@
 const SHOPIFY_DOMAIN = import.meta.env.VITE_SHOPIFY_DOMAIN || "kaziranga-tea-factory-2.myshopify.com";
 const STOREFRONT_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN || "a9aabfb02dbe578cacb0dd4f7aea7b19";
 
-export async function fetchShopifyPrices(): Promise<Record<string, number>> {
+export type ShopifyVariantInfo = {
+  price: number;
+  available: boolean;
+};
+
+export async function fetchShopifyPrices(): Promise<Record<string, ShopifyVariantInfo>> {
   if (!SHOPIFY_DOMAIN || !STOREFRONT_TOKEN) {
     console.warn("Shopify Environment Variables are missing.");
     return {};
@@ -16,6 +21,7 @@ export async function fetchShopifyPrices(): Promise<Record<string, number>> {
               edges {
                 node {
                   id
+                  availableForSale
                   price {
                     amount
                   }
@@ -44,7 +50,7 @@ export async function fetchShopifyPrices(): Promise<Record<string, number>> {
     }
 
     const json = await response.json();
-    const priceMap: Record<string, number> = {};
+    const variantMap: Record<string, ShopifyVariantInfo> = {};
 
     if (json.data?.products?.edges) {
       json.data.products.edges.forEach(({ node: product }: any) => {
@@ -52,13 +58,16 @@ export async function fetchShopifyPrices(): Promise<Record<string, number>> {
           // Extract variant numeric ID from global ID (e.g. gid://shopify/ProductVariant/48737792524531)
           const numericId = variant.id.split("/").pop();
           if (numericId && variant.price?.amount) {
-            priceMap[numericId] = parseFloat(variant.price.amount);
+            variantMap[numericId] = {
+              price: parseFloat(variant.price.amount),
+              available: variant.availableForSale ?? true,
+            };
           }
         });
       });
     }
 
-    return priceMap;
+    return variantMap;
   } catch (error) {
     console.error("Failed to fetch Shopify prices:", error);
     return {};

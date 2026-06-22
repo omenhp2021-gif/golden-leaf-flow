@@ -17,7 +17,7 @@ export interface ProductCardProps {
 
 export const ProductCard = ({ product, className }: ProductCardProps) => {
   const navigate = useNavigate();
-  const { prices } = useShopify();
+  const { prices, loading } = useShopify();
   // Default selected weight to the first pricing option if available
   const [selectedWeight, setSelectedWeight] = useState(
     product.pricingOptions?.[0]?.weight || product.priceUnit
@@ -49,6 +49,7 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
   )?.price || product.price;
 
   let buyUrl = SHOPIFY_URL;
+  let isAvailable = true; // fallback: allow checkout if Shopify data not loaded yet
   const variantUrl = product.shopifyVariants?.[selectedWeight];
   if (variantUrl) {
     try {
@@ -57,7 +58,11 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
       if (variantId) {
         buyUrl = `${urlObj.origin}/cart/${variantId}:1`;
         if (prices[variantId]) {
-          currentPrice = prices[variantId];
+          currentPrice = prices[variantId].price;
+          isAvailable = prices[variantId].available;
+        } else if (!loading) {
+          // Shopify loaded but no data for this variant - treat as unavailable
+          isAvailable = false;
         }
       }
     } catch (e) {
@@ -157,19 +162,39 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
                 {/* Quantity Selector - Pills */}
                 {product.pricingOptions && (
                   <div className="flex gap-2 flex-wrap">
-                    {product.pricingOptions.map(option => (
-                      <Badge
-                        key={option.weight}
-                        variant={selectedWeight === option.weight ? "default" : "outline"}
-                        className={`cursor-pointer transition-colors ${selectedWeight === option.weight ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/20'}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedWeight(option.weight);
-                        }}
-                      >
-                        {option.weight}
-                      </Badge>
-                    ))}
+                    {product.pricingOptions.map(option => {
+                      // Check per-pill availability
+                      const pillVariantUrl = product.shopifyVariants?.[option.weight];
+                      let pillAvailable = true;
+                      if (pillVariantUrl) {
+                        try {
+                          const pillId = new URL(pillVariantUrl).searchParams.get("variant");
+                          if (pillId && prices[pillId]) pillAvailable = prices[pillId].available;
+                          else if (pillId && !loading) pillAvailable = false;
+                        } catch (_) {}
+                      }
+                      return (
+                        <Badge
+                          key={option.weight}
+                          variant={selectedWeight === option.weight ? "default" : "outline"}
+                          className={`cursor-pointer transition-colors relative ${
+                            selectedWeight === option.weight
+                              ? 'bg-primary text-primary-foreground'
+                              : 'hover:bg-primary/20'
+                          } ${
+                            !pillAvailable
+                              ? 'opacity-60 line-through decoration-red-500 decoration-2'
+                              : ''
+                          }`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedWeight(option.weight);
+                          }}
+                        >
+                          {option.weight}
+                        </Badge>
+                      );
+                    })}
                   </div>
                 )}
                 
@@ -190,20 +215,30 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
                     >
                       Details
                     </Button>
-                    <Button 
-                      size="sm"
-                      className="bg-gradient-green hover:opacity-90 shadow-lg group"
-                      asChild
-                    >
-                      <a
-                        href={buyUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                   {isAvailable ? (
+                      <Button 
+                        size="sm"
+                        className="bg-gradient-green hover:opacity-90 shadow-lg group"
+                        asChild
                       >
-                        <ExternalLink className="w-3.5 h-3.5 mr-1.5 group-hover:scale-110 transition-transform" />
-                        Buy
-                      </a>
-                    </Button>
+                        <a
+                          href={buyUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5 mr-1.5 group-hover:scale-110 transition-transform" />
+                          Buy
+                        </a>
+                      </Button>
+                    ) : (
+                      <Button
+                        size="sm"
+                        disabled
+                        className="bg-muted text-muted-foreground cursor-not-allowed opacity-60"
+                      >
+                        Out of Stock
+                      </Button>
+                    )}
                   </div>
                 </div>
              </div>

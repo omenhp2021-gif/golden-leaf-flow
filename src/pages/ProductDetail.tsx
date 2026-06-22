@@ -22,7 +22,7 @@ const SHOPIFY_URL = "https://kaziranga-tea-factory-2.myshopify.com";
 export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const { prices } = useShopify();
+  const { prices, loading } = useShopify();
   
   const product = slug ? getProductBySlug(slug) : undefined;
 
@@ -62,6 +62,7 @@ export default function ProductDetail() {
   )?.price || product.price;
 
   let buyUrl = SHOPIFY_URL;
+  let isAvailable = true; // fallback: allow checkout if Shopify data not loaded yet
   const variantUrl = product.shopifyVariants?.[selectedWeight];
   if (variantUrl) {
     try {
@@ -70,7 +71,10 @@ export default function ProductDetail() {
       if (variantId) {
         buyUrl = `${urlObj.origin}/cart/${variantId}:1`;
         if (prices[variantId]) {
-          currentPrice = prices[variantId];
+          currentPrice = prices[variantId].price;
+          isAvailable = prices[variantId].available;
+        } else if (!loading) {
+          isAvailable = false;
         }
       }
     } catch (e) {
@@ -183,19 +187,38 @@ export default function ProductDetail() {
                     Select Size
                   </h3>
                   <div className="flex gap-2 flex-wrap">
-                    {product.pricingOptions.map(option => (
-                      <Badge
-                        key={option.weight}
-                        variant={selectedWeight === option.weight ? "default" : "outline"}
-                        className={`cursor-pointer px-4 py-2 text-sm transition-colors ${selectedWeight === option.weight ? 'bg-primary text-primary-foreground' : 'hover:bg-primary/20'}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedWeight(option.weight);
-                        }}
-                      >
-                        {option.weight}
-                      </Badge>
-                    ))}
+                    {product.pricingOptions.map(option => {
+                      const pillVariantUrl = product.shopifyVariants?.[option.weight];
+                      let pillAvailable = true;
+                      if (pillVariantUrl) {
+                        try {
+                          const pillId = new URL(pillVariantUrl).searchParams.get("variant");
+                          if (pillId && prices[pillId]) pillAvailable = prices[pillId].available;
+                          else if (pillId && !loading) pillAvailable = false;
+                        } catch (_) {}
+                      }
+                      return (
+                        <Badge
+                          key={option.weight}
+                          variant={selectedWeight === option.weight ? "default" : "outline"}
+                          className={`cursor-pointer px-4 py-2 text-sm transition-colors ${
+                            selectedWeight === option.weight
+                              ? 'bg-primary text-primary-foreground'
+                              : 'hover:bg-primary/20'
+                          } ${
+                            !pillAvailable
+                              ? 'opacity-60 line-through decoration-red-500 decoration-2'
+                              : ''
+                          }`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedWeight(option.weight);
+                          }}
+                        >
+                          {option.weight}
+                        </Badge>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -209,6 +232,7 @@ export default function ProductDetail() {
                   <div className="text-muted-foreground font-medium">per {selectedWeight}</div>
                 </div>
                 <div className="flex gap-3 flex-1 sm:justify-end">
+                  {isAvailable ? (
                   <Button 
                     size="lg"
                     className="bg-gradient-green hover:opacity-90 shadow-lg hover-lift group px-8"
@@ -219,6 +243,15 @@ export default function ProductDetail() {
                       Buy Now
                     </a>
                   </Button>
+                ) : (
+                  <Button
+                    size="lg"
+                    disabled
+                    className="bg-muted text-muted-foreground cursor-not-allowed opacity-60 px-8"
+                  >
+                    Out of Stock
+                  </Button>
+                )}
                 </div>
               </div>
             </div>

@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { fetchShopifyPrices } from "@/utils/shopify";
+import { fetchShopifyPrices, ShopifyVariantInfo } from "@/utils/shopify";
 
 type ShopifyContextType = {
-  prices: Record<string, number>;
+  prices: Record<string, ShopifyVariantInfo>;
   loading: boolean;
 };
 
@@ -12,7 +12,7 @@ const ShopifyContext = createContext<ShopifyContextType>({
 });
 
 export const ShopifyProvider = ({ children }: { children: React.ReactNode }) => {
-  const [prices, setPrices] = useState<Record<string, number>>({});
+  const [prices, setPrices] = useState<Record<string, ShopifyVariantInfo>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
