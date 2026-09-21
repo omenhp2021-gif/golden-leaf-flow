@@ -12,7 +12,11 @@ import {
   MapPin, 
   ArrowLeft,
   Leaf,
-  CheckCircle
+  CheckCircle,
+  ShoppingBag,
+  Plus,
+  Minus,
+  Check
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useShopify } from "@/contexts/ShopifyContext";
@@ -22,13 +26,15 @@ const SHOPIFY_URL = "https://kaziranga-tea-factory-2.myshopify.com";
 export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const { prices, loading } = useShopify();
+  const { prices, loading, addToCart, setIsCartOpen } = useShopify();
   
   const product = slug ? getProductBySlug(slug) : undefined;
 
   const [selectedWeight, setSelectedWeight] = useState(
     product?.pricingOptions?.[0]?.weight || product?.priceUnit || "100g"
   );
+  const [quantity, setQuantity] = useState(1);
+  const [addedToast, setAddedToast] = useState(false);
 
   useEffect(() => {
     if (product) {
@@ -62,14 +68,17 @@ export default function ProductDetail() {
   )?.price || product.price;
 
   let buyUrl = SHOPIFY_URL;
-  let isAvailable = true; // fallback: allow checkout if Shopify data not loaded yet
+  let isAvailable = true;
+  let variantIdStr = "";
+
   const variantUrl = product.shopifyVariants?.[selectedWeight];
   if (variantUrl) {
     try {
       const urlObj = new URL(variantUrl);
       const variantId = urlObj.searchParams.get("variant");
       if (variantId) {
-        buyUrl = `${urlObj.origin}/cart/${variantId}:1`;
+        variantIdStr = variantId;
+        buyUrl = `${urlObj.origin}/cart/${variantId}:${quantity}`;
         if (prices[variantId]) {
           currentPrice = prices[variantId].price;
           isAvailable = prices[variantId].available;
@@ -81,6 +90,23 @@ export default function ProductDetail() {
       console.error("Invalid variant URL", e);
     }
   }
+
+  const handleAddToCart = () => {
+    const numericPrice = typeof currentPrice === "number" ? currentPrice : parseFloat(currentPrice);
+    const added = addToCart({
+      variantId: variantIdStr || `${product.id}-${selectedWeight}`,
+      productId: product.id,
+      productName: product.name,
+      weight: selectedWeight,
+      price: numericPrice,
+      image: product.image,
+      slug: product.slug,
+    }, quantity);
+    if (added) {
+      setAddedToast(true);
+      setTimeout(() => setAddedToast(false), 2000);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -240,35 +266,85 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              {/* Price & CTA */}
+              {/* Quantity Stepper */}
+              <div className="pt-2">
+                <h3 className="text-sm font-semibold text-muted-foreground mb-3">
+                  Quantity
+                </h3>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center border border-border rounded-xl bg-card p-1 shadow-xs">
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="p-2 hover:bg-muted rounded-lg transition-colors"
+                      disabled={quantity <= 1}
+                    >
+                      <Minus className="w-4 h-4 text-muted-foreground" />
+                    </button>
+                    <span className="w-12 text-center font-bold text-base">
+                      {quantity}
+                    </span>
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="p-2 hover:bg-muted rounded-lg transition-colors"
+                    >
+                      <Plus className="w-4 h-4 text-muted-foreground" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Price & CTA Buttons */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-6 mt-2 border-t border-border">
                 <div>
                   <div className="text-4xl font-bold bg-gradient-green bg-clip-text text-transparent">
-                    ₹{typeof currentPrice === 'number' ? currentPrice.toFixed(2) : currentPrice}
+                    ₹{( (typeof currentPrice === 'number' ? currentPrice : parseFloat(currentPrice)) * quantity ).toFixed(2)}
                   </div>
-                  <div className="text-muted-foreground font-medium">per {selectedWeight}</div>
+                  <div className="text-muted-foreground font-medium">
+                    {quantity} × {selectedWeight} (₹{typeof currentPrice === 'number' ? currentPrice.toFixed(2) : currentPrice} each)
+                  </div>
                 </div>
-                <div className="flex gap-3 flex-1 sm:justify-end">
+                <div className="flex gap-3 flex-1 sm:justify-end flex-wrap w-full sm:w-auto">
                   {isAvailable ? (
-                  <Button 
-                    size="lg"
-                    className="bg-gradient-green hover:opacity-90 shadow-lg hover-lift group px-8"
-                    asChild
-                  >
-                    <a href={buyUrl} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
-                      Buy Now
-                    </a>
-                  </Button>
-                ) : (
-                  <Button
-                    size="lg"
-                    disabled
-                    className="bg-muted text-muted-foreground cursor-not-allowed opacity-60 px-8"
-                  >
-                    Out of Stock
-                  </Button>
-                )}
+                    <>
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        className="border-primary/50 text-primary hover:bg-primary/10 font-bold px-6 group flex-1 sm:flex-initial"
+                        onClick={handleAddToCart}
+                      >
+                        {addedToast ? (
+                          <>
+                            <Check className="w-5 h-5 mr-2 text-green-600" />
+                            Added to Cart!
+                          </>
+                        ) : (
+                          <>
+                            <ShoppingBag className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
+                            Add to Cart
+                          </>
+                        )}
+                      </Button>
+
+                      <Button 
+                        size="lg"
+                        className="bg-gradient-green hover:opacity-90 shadow-lg hover-lift group px-8 flex-1 sm:flex-initial"
+                        asChild
+                      >
+                        <a href={buyUrl} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
+                          Buy Now
+                        </a>
+                      </Button>
+                    </>
+                  ) : (
+                    <Button
+                      size="lg"
+                      disabled
+                      className="bg-muted text-muted-foreground cursor-not-allowed opacity-60 px-8"
+                    >
+                      Out of Stock
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>

@@ -13,6 +13,7 @@ import { CookieConsent } from "./components/CookieConsent";
 import { initTracking } from "./utils/tracking";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { ShopifyProvider } from "./contexts/ShopifyContext";
+import { FloatingCart } from "./components/FloatingCart";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +61,7 @@ const App = () => {
             <Sonner />
             <BrowserRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
               <ScrollToTop />
+              <FloatingCart />
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/products" element={<ProductsPage />} />

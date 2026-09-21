@@ -1,14 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { Menu, Phone, Mail } from "lucide-react";
+import { Menu, Phone, Mail, ShoppingBag } from "lucide-react";
 import { useState } from "react";
 import { ModeToggle } from "@/components/ModeToggle";
 import logo from "@/assets/logo.png";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useShopify } from "@/contexts/ShopifyContext";
 
 export const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { totalCount, setIsCartOpen, isCartOpen } = useShopify();
 
   const scrollToSection = (sectionId: string) => {
     setMobileMenuOpen(false);
@@ -83,6 +85,20 @@ export const Navigation = () => {
               <Mail className="w-4 h-4 text-secondary group-hover:scale-110 transition-transform" />
               <span className="text-sm font-medium">Email Us</span>
             </a>
+
+            {/* Cart Button */}
+            <button
+              onClick={() => setIsCartOpen(!isCartOpen)}
+              className="relative p-2 rounded-lg bg-muted/50 hover:bg-muted transition-colors flex items-center justify-center group"
+              title="View Cart"
+            >
+              <ShoppingBag className="w-5 h-5 text-foreground group-hover:scale-110 transition-transform" />
+              {totalCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-4 h-4 px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-extrabold">
+                  {totalCount}
+                </span>
+              )}
+            </button>
 
             <ModeToggle />
 

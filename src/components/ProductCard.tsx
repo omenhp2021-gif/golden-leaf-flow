@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Product } from "@/data/products";
-import { ExternalLink, Thermometer, Clock, MapPin } from "lucide-react";
+import { ExternalLink, Thermometer, Clock, MapPin, ShoppingBag, Check } from "lucide-react";
 import { trackInterest } from "@/utils/tracking";
 import { useShopify } from "@/contexts/ShopifyContext";
 
@@ -17,13 +17,14 @@ export interface ProductCardProps {
 
 export const ProductCard = ({ product, className }: ProductCardProps) => {
   const navigate = useNavigate();
-  const { prices, loading } = useShopify();
+  const { prices, loading, addToCart, setIsCartOpen } = useShopify();
   // Default selected weight to the first pricing option if available
   const [selectedWeight, setSelectedWeight] = useState(
     product.pricingOptions?.[0]?.weight || product.priceUnit
   );
   
   const [showNotification, setShowNotification] = useState(false);
+  const [addedToast, setAddedToast] = useState(false);
 
   // Update selected weight if product changes
   useEffect(() => {
@@ -35,9 +36,7 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
   }, [product]);
 
   const handleNotifyMe = () => {
-    // Track interest in analytics (Option 2)
     trackInterest(product.name);
-    
     setShowNotification(true);
     setTimeout(() => {
       setShowNotification(false);
@@ -49,19 +48,21 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
   )?.price || product.price;
 
   let buyUrl = SHOPIFY_URL;
-  let isAvailable = true; // fallback: allow checkout if Shopify data not loaded yet
+  let isAvailable = true;
+  let variantIdStr = "";
+
   const variantUrl = product.shopifyVariants?.[selectedWeight];
   if (variantUrl) {
     try {
       const urlObj = new URL(variantUrl);
       const variantId = urlObj.searchParams.get("variant");
       if (variantId) {
+        variantIdStr = variantId;
         buyUrl = `${urlObj.origin}/cart/${variantId}:1`;
         if (prices[variantId]) {
           currentPrice = prices[variantId].price;
           isAvailable = prices[variantId].available;
         } else if (!loading) {
-          // Shopify loaded but no data for this variant - treat as unavailable
           isAvailable = false;
         }
       }
@@ -69,6 +70,23 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
       console.error("Invalid variant URL", e);
     }
   }
+
+  const handleAddToCart = () => {
+    const numericPrice = typeof currentPrice === "number" ? currentPrice : parseFloat(currentPrice);
+    const added = addToCart({
+      variantId: variantIdStr || `${product.id}-${selectedWeight}`,
+      productId: product.id,
+      productName: product.name,
+      weight: selectedWeight,
+      price: numericPrice,
+      image: product.image,
+      slug: product.slug,
+    });
+    if (added) {
+      setAddedToast(true);
+      setTimeout(() => setAddedToast(false), 2000);
+    }
+  };
 
   return (
     <Card className={`overflow-hidden hover-lift border-0 shadow-lg bg-card group flex flex-col h-full ${className || ""}`}>
@@ -163,7 +181,6 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
                 {product.pricingOptions && (
                   <div className="flex gap-2 flex-wrap">
                     {product.pricingOptions.map(option => {
-                      // Check per-pill availability
                       const pillVariantUrl = product.shopifyVariants?.[option.weight];
                       let pillAvailable = true;
                       if (pillVariantUrl) {
@@ -215,38 +232,50 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
                   </div>
                 )}
                 
-                {/* Price & CTA */}
-                <div className="flex items-center justify-between">
+                {/* Price & CTA Buttons */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
                   <div>
                     <div className="text-2xl font-bold bg-gradient-green bg-clip-text text-transparent transition-all duration-300">
                       ₹{typeof currentPrice === 'number' ? currentPrice.toFixed(2) : currentPrice}
                     </div>
                     <div className="text-xs text-muted-foreground font-medium">{selectedWeight}</div>
                   </div>
-                  <div className="flex gap-2">
-                    <Button 
-                      variant="outline"
-                      size="sm"
-                      className="border-primary/30 hover:bg-primary/10"
-                      onClick={() => navigate(`/product/${product.slug}`)}
-                    >
-                      Details
-                    </Button>
-                   {isAvailable ? (
-                      <Button 
-                        size="sm"
-                        className="bg-gradient-green hover:opacity-90 shadow-lg group"
-                        asChild
-                      >
-                        <a
-                          href={buyUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                  <div className="flex gap-2 items-center flex-wrap">
+                    {isAvailable ? (
+                      <>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="border-primary/40 text-primary hover:bg-primary/10 group"
+                          onClick={handleAddToCart}
                         >
-                          <ExternalLink className="w-3.5 h-3.5 mr-1.5 group-hover:scale-110 transition-transform" />
-                          Buy
-                        </a>
-                      </Button>
+                          {addedToast ? (
+                            <>
+                              <Check className="w-3.5 h-3.5 mr-1 text-green-600" />
+                              Added!
+                            </>
+                          ) : (
+                            <>
+                              <ShoppingBag className="w-3.5 h-3.5 mr-1 group-hover:scale-110 transition-transform" />
+                              Add
+                            </>
+                          )}
+                        </Button>
+                        <Button 
+                          size="sm"
+                          className="bg-gradient-green hover:opacity-90 shadow-md group"
+                          asChild
+                        >
+                          <a
+                            href={buyUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5 mr-1 group-hover:scale-110 transition-transform" />
+                            Buy Now
+                          </a>
+                        </Button>
+                      </>
                     ) : (
                       <Button
                         size="sm"
@@ -265,3 +294,4 @@ export const ProductCard = ({ product, className }: ProductCardProps) => {
     </Card>
   );
 };
+
